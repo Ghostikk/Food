@@ -1,8 +1,9 @@
-function tabs() {
+function tabs(tabsSelector, tabsContentSelector, tabsParentSelector,  activeClass) {
    //Tabs
-    const tabs = document.querySelectorAll(".tabheader__item"),
-        tabHeader = document.querySelector(".tabheader__items"),
-        tabContent = document.querySelectorAll(".tabcontent");
+    const tabs = document.querySelectorAll(tabsSelector),
+          tabContent = document.querySelectorAll(tabsContentSelector),
+          tabHeader = document.querySelector(tabsParentSelector);
+          
 
     // перебераем элементы и убираем класс активности
     function hideTabContent() {
@@ -13,7 +14,7 @@ function tabs() {
       });
       // перебераем элементы и ставим дисплей нан
         tabs.forEach((item) => {
-            item.classList.remove("tabheader__item_active");
+            item.classList.remove(activeClass);
         });
     }
     // выбранному элементу tabContent добавляем дисплей блок
@@ -22,7 +23,7 @@ function tabs() {
       // tabContent[i].style.display = "block";
         tabContent[i].classList.add("show", "fade");
         tabContent[i].classList.remove("hide");
-        tabs[i].classList.add("tabheader__item_active");
+        tabs[i].classList.add(activeClass);
     }
 
     // вешаем обработчик события по клику на родителя tabHeader
@@ -30,8 +31,8 @@ function tabs() {
     // если номер перебираемого улемента равен выбранно кнопке, тогда вызываем функции
     tabHeader.addEventListener("click", (e) => {
         const target = e.target;
-
-        if (target && target.classList.contains("tabheader__item")) {
+        // с помощью слйс срезаем первый символ (точку перед селектором для работы с классом)
+        if (target && target.classList.contains(tabsSelector.slice(1))) {
             tabs.forEach((item, i) => {
                 if (target === item) {
                     hideTabContent();
@@ -43,4 +44,4 @@ function tabs() {
     });
 }
 
-module.exports = tabs;
+export default tabs;

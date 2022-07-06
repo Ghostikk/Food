@@ -1,8 +1,8 @@
+import {getResource} from '../services/services';
+
+// Используем классы для карточек
 function cards() {
-    // Используем классы для карточек 
-
   class MenuCard {
-
       constructor (src, alt, title, descr, price, parentSelector, ...classes) {
           this.src = src;
           this.alt = alt;
@@ -44,16 +44,6 @@ function cards() {
       }
   }
   
-  const getResource = async (url) => {
-      const result = await fetch (url);
-      // метод ок присутствует у fetch при Get запросах
-      if (!result.ok) {
-        // throw позволяет генерировать исключения, определяемые пользователем
-        throw new Error (`Команда fetch по url ${url} не может быть выполнена, status: ${result.status}`);
-      }
-      return await result.json();
-  };
-
   // автоматически рендерит карточки в зависимости от их количесва расположенного в db.json/menu
   // перебераем черз ФоИЧ и деструктурезируем объект
   getResource('http://localhost:3000/menu')
@@ -63,6 +53,7 @@ function cards() {
       "menu__item").render();
           });
       });
+
 }
 
-module.exports = cards;
+export default cards;

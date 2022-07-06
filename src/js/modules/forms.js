@@ -1,6 +1,9 @@
-function forms() {
+import {openModal, closeModal} from './modal';
+import {postData} from '../services/services';
+
+function forms(formSelector, modalTimerId) {
     // Формы
-  const forms = document.querySelectorAll ("form");
+  const forms = document.querySelectorAll (formSelector);
 
   const mess = {
       loading: 'img/svg/spinner.svg',
@@ -12,28 +15,11 @@ function forms() {
       bindPostData (form);
    });
 
-  // async - впереди асинхронный код
-  // await - ожидание результата запроса, всегда в паре с async
-  // иначе будет undefined
-  const postData = async (url, data) => {
-      const result = await fetch (url, {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-            },
-          body: data
-      });
-
-
-      return await result.json();
-  };
-  
-
   function bindPostData (form) {
       form.addEventListener ("submit", (e) => {
           e.preventDefault();
-
           const statusMess = document.createElement('img');
+
           statusMess.src = mess.loading;
           statusMess.textContent = mess.loading;
           statusMess.style.cssText = `
@@ -44,7 +30,6 @@ function forms() {
 
           // получение данных с формы
           const formData = new FormData (form);
-
           // впревращает объект в матрицу (массив массивов), далее в объект, а далее в JSON
           const json = JSON.stringify(Object.fromEntries(formData.entries()));
 
@@ -69,7 +54,7 @@ function forms() {
             thanksModal  = document.createElement ('div');
 
       prevModalDialog.classList.add ('hide');
-      openModal();  
+      openModal('.modal', modalTimerId);  
 
 
       thanksModal.classList.add('modal__dialog');
@@ -86,7 +71,7 @@ function forms() {
           prevModalDialog.classList.add ('show');
           prevModalDialog.classList.remove ('hide');
 
-          closeModal();
+          closeModal('.modal');
       },4000);
     }
 // получение данный через JSON
@@ -95,4 +80,4 @@ function forms() {
       .then (result => console.log(result));
 }
 
-module.exports = forms;
+export default forms;

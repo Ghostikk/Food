@@ -1,52 +1,57 @@
-function modal() {
-      // modal windows
+function openModal (modalSelector, modalTimerId) {
+    const modal = document.querySelector(modalSelector);
+    modal.style.display = 'block';
+    // запрет скролла страницы при вызове формы
+    document.body.style.overflow = "hidden";
 
-    const modalTrigger = document.querySelectorAll("[data-modal]"),
-          modal = document.querySelector(".modal"),
-          modalTimerId = setTimeout (openModal, 3000000);
-
-
-    function openModal () {
-        modal.style.display = 'block';
-          // запрет скролла страницы при вызове формы
-        document.body.style.overflow = "hidden";
-        // если пользователь сам открыл модалку, очищаем таймер 
+    // если пользователь сам открыл модалку, очищаем таймер 
+    if (modalTimerId) {
         clearInterval (modalTimerId);
-    }     
+    }
+}     
 
-    modalTrigger.forEach(btn => {
-        btn.addEventListener ("click", openModal);
-    });
- 
-    function closeModal () {
-        modal.style.display = 'none';
-        document.body.style.overflow = "";
+function closeModal (modalSelector) {
+    const modal = document.querySelector(modalSelector);
+    modal.style.display = 'none';
+    document.body.style.overflow = "";
     }
 
-    
+function modal(triggerSelector, modalSelector, modalTimerId) {
+
+    // modal windows
+    const modalTrigger = document.querySelectorAll(triggerSelector),
+        modal = document.querySelector(modalSelector);
+
+    //оборачивание в стрелочную функцию необходимо для ее вызова только после клика (иначе она вызовится сразу)
+    modalTrigger.forEach(btn => {
+        btn.addEventListener ("click", () => openModal(modalSelector, modalTimerId));
+    });
+ 
+        
     modal.addEventListener ('click', (e) => {
         if (e.target === modal || e.target.getAttribute('data-close') == '') {
-            closeModal ();
+            closeModal (modalSelector);
         }
     });
 
     document.addEventListener ('keydown', (e) => {
         if (e.code === "Escape" && modal.style.display === 'block') {
-            closeModal ();
+            closeModal (modalSelector);
       }
     });
-
 
     function showModalByScroll () {
       // сравниваем что сумма прокрученной части (скрорллом) и видимой клиенской части экрана больше
       // либо равно всей высоте страницы сайта, то достигнут конец
       // -1 пиксель для фикса ошибки, что не отображается модальное окно
         if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight - 1) {
-              openModal();
+              openModal(modalSelector, modalTimerId);
               window.removeEventListener ('scroll', showModalByScroll);
           }
     }
         window.addEventListener ('scroll', showModalByScroll);
 }
 
-module.exports = modal;
+export default modal;
+export {closeModal};
+export {openModal};

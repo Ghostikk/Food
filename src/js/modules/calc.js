@@ -1,9 +1,6 @@
 function calc() {
       // калькулятор каллорий
-
     let result = document.querySelector ('.calculating__result span');
-
-    
     let sex, height, weight, age, ratio;
 
     // валидация возраста
@@ -20,10 +17,9 @@ function calc() {
             data.style.backgroundColor = 'white';
             data.placeholder = 'Введите возраст';
         }
-        
       }); 
-
     }
+
   validateInfo('#age'); 
 
     // запись данных по умолчанию в localStorage для пола
@@ -61,7 +57,7 @@ function calc() {
 
     
     // функция для работы с локал сторедж по запоминанию выбранных блоков
-       function initLocalSettings(selector, activeClass) {
+    function initLocalSettings(selector, activeClass) {
         const elements = document.querySelectorAll(selector);
 
         elements.forEach(elem => {
@@ -80,10 +76,9 @@ function calc() {
 
     //
 
-     function getStaticInformation(parentSelector, activeClass) {
+    function getStaticInformation(parentSelector, activeClass) {
         const elements = document.querySelectorAll(`${parentSelector} div`);
               
-
         elements.forEach(elem => {
             elem.addEventListener('click', (e) => {
               const target = e.target;
@@ -119,9 +114,7 @@ function calc() {
     function getDynamicInformation(selector) {
         const input = document.querySelector(selector);
         
-        
             input.addEventListener('input', () => {
-
                 //проверка, что в полях ввода нет чисел
                 if (input.value.match(/\D/g)) {
                       input.style.border = '1px solid red';
@@ -150,4 +143,4 @@ function calc() {
     getDynamicInformation('#age');
 }
 
-module.exports = calc;
+export default calc;

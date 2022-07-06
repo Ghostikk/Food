@@ -1,7 +1,5 @@
-function timer() {
+function timer(id, deadLine) {
     // Таймер
-
-  const deadlineTime = "2022-7-15";
   
   function getTimeRemaining(endtime) {
     // разница в мс между текущей датой и датой окончания таймера
@@ -50,7 +48,7 @@ function timer() {
         return num >= 0 && num < 10 ? `0${num}` : num;
     };
 
-  setClock(".timer", deadlineTime);
+  setClock(id, deadLine);
 }
 
-module.exports = timer;
+export default timer;
